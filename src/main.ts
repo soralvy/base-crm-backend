@@ -13,6 +13,7 @@ import {
   LoggingInterceptor,
 } from './shared/interceptors';
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
+import { setupSwaggerModule } from './shared/lib';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -46,6 +47,8 @@ async function bootstrap() {
   const logger = app.get(Logger);
   app.useLogger(logger);
   app.flushLogs();
+
+  setupSwaggerModule(app, logger, configService);
 
   const port = configService.getOrThrow('app.port', { infer: true });
   await app.listen(port);
