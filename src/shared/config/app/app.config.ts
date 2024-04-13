@@ -10,6 +10,7 @@ import {
   Min,
 } from 'class-validator';
 import { validateConfig } from '../../lib';
+import { CONFIG_KEYS } from '../config-keys';
 
 enum Environment {
   Development = 'development',
@@ -42,7 +43,7 @@ class EnvironmentVariablesValidator {
 }
 
 // eslint-disable-next-line complexity
-export default registerAs<AppConfig>('app', () => {
+export default registerAs<AppConfig>(CONFIG_KEYS.app, () => {
   validateConfig(process.env, EnvironmentVariablesValidator);
 
   const defaultPort = 3000;
@@ -58,5 +59,5 @@ export default registerAs<AppConfig>('app', () => {
     backendDomain: process.env.BACKEND_DOMAIN ?? 'http://localhost',
     port,
     apiPrefix: process.env.API_PREFIX || 'api',
-  };
+  } satisfies AppConfig;
 });

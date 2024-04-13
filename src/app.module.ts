@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { configurations } from './shared/config';
-import { setupLoggerModule } from './shared/lib';
+import { setupLoggerModule, setupTypeormModule } from './shared/lib';
 
 @Module({
   imports: [
@@ -11,6 +11,7 @@ import { setupLoggerModule } from './shared/lib';
       envFilePath: ['.env'],
     }),
     setupLoggerModule(),
+    setupTypeormModule(),
   ],
 })
 export class AppModule {}

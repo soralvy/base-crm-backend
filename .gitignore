@@ -2,6 +2,9 @@
 /dist
 /node_modules
 
+# docker
+.docker-data
+
 # Logs
 logs
 *.log
@@ -12,7 +15,7 @@ yarn-error.log*
 lerna-debug.log*
 
 # Environment
-.env*
+.env
 
 # OS
 .DS_Store
