@@ -40,15 +40,17 @@ class EnvironmentVariablesValidator {
 export default registerAs<AppConfig>('app', () => {
   validateConfig(process.env, EnvironmentVariablesValidator);
 
+  const defaultPort = 3000;
+  const port = Number.parseInt(
+    process.env.APP_PORT || process.env.PORT || defaultPort.toString(),
+    10,
+  );
+
   return {
     nodeEnv: process.env.NODE_ENV || 'development',
     name: process.env.APP_NAME || 'app',
     frontendDomain: process.env.FRONTEND_DOMAIN ?? 'http://localhost',
-    port: process.env.APP_PORT
-      ? parseInt(process.env.APP_PORT, 10)
-      : process.env.PORT
-      ? parseInt(process.env.PORT, 10)
-      : 3000,
+    port,
     apiPrefix: process.env.API_PREFIX || 'api',
   };
 });
