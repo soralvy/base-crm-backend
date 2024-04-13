@@ -9,7 +9,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { validateConfig } from '../lib';
+import { validateConfig } from '../../lib';
 
 enum Environment {
   Development = 'development',

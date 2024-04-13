@@ -8,13 +8,19 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import { useContainer } from 'class-validator';
-import { AsyncResponseResolverInterceptor } from './shared/interceptors';
+import {
+  AsyncResponseResolverInterceptor,
+  LoggingInterceptor,
+} from './shared/interceptors';
+import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService<AllConfigType>);
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
+  app.enableShutdownHooks();
 
   app.setGlobalPrefix(
     configService.getOrThrow('app.apiPrefix', { infer: true }),
@@ -29,13 +35,22 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe(validationOptions));
   app.useGlobalInterceptors(
+    new LoggingInterceptor(),
     // AsyncResponseResolverInterceptor is used to resolve promises in responses because class-transformer can't do it
     // https://github.com/typestack/class-transformer/issues/549
     new AsyncResponseResolverInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
+    new LoggerErrorInterceptor(),
   );
 
-  await app.listen(configService.getOrThrow('app.port', { infer: true }));
+  const logger = app.get(Logger);
+  app.useLogger(logger);
+  app.flushLogs();
+
+  const port = configService.getOrThrow('app.port', { infer: true });
+  await app.listen(port);
+
+  logger.log(`App successfully started. Listening on port ${port}`);
 }
 
 bootstrap();
