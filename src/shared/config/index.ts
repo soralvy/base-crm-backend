@@ -1,3 +1,4 @@
 export * from './config';
-export * from './validation.config';
-export * from './app.config';
+export * from './validation/validation.config';
+export * from './app/app.config';
+export * from './logger';
