@@ -32,11 +32,16 @@ class EnvironmentVariablesValidator {
   @IsOptional()
   FRONTEND_DOMAIN: string;
 
+  @IsUrl({ require_tld: false })
+  @IsOptional()
+  BACKEND_DOMAIN: string;
+
   @IsString()
   @IsOptional()
   API_PREFIX: string;
 }
 
+// eslint-disable-next-line complexity
 export default registerAs<AppConfig>('app', () => {
   validateConfig(process.env, EnvironmentVariablesValidator);
 
@@ -50,6 +55,7 @@ export default registerAs<AppConfig>('app', () => {
     nodeEnv: process.env.NODE_ENV || 'development',
     name: process.env.APP_NAME || 'app',
     frontendDomain: process.env.FRONTEND_DOMAIN ?? 'http://localhost',
+    backendDomain: process.env.BACKEND_DOMAIN ?? 'http://localhost',
     port,
     apiPrefix: process.env.API_PREFIX || 'api',
   };
