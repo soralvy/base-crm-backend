@@ -1,8 +1,8 @@
 import {
   HttpStatus,
   UnprocessableEntityException,
-  ValidationError,
-  ValidationPipeOptions,
+  type ValidationError,
+  type ValidationPipeOptions,
 } from '@nestjs/common';
 
 type ErrorResult = {
@@ -18,7 +18,6 @@ type ErrorResult = {
  * @returns An object where each key is a property with a validation error, and each value
  *          is either a string of error messages or a nested object with more errors.
  */
-
 const generateErrors = (errors: ValidationError[]): ErrorResult => {
   const result: ErrorResult = {};
   for (const error of errors) {

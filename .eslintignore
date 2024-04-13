@@ -1,0 +1,4 @@
+node_modules
+next-env.d.ts
+postcss.config.js
+next.config.js

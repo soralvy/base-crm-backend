@@ -1,4 +1,4 @@
-import { AppConfig } from './app-config.type';
+import { type AppConfig } from './app-config.type';
 import appConfig from './app.config';
 
 export type AllConfigType = {

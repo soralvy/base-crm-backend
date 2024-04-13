@@ -1,7 +1,7 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { AllConfigType, validationOptions } from './shared/config';
+import { type AllConfigType, validationOptions } from './shared/config';
 import {
   ClassSerializerInterceptor,
   ValidationPipe,
