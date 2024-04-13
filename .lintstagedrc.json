@@ -1,0 +1,10 @@
+{
+	"*.ts": [
+		"eslint",
+		"prettier --write '**/*.{ts,tsx}'"
+	],
+	"*.tsx": [
+		"eslint",
+		"prettier --write '**/*.{ts,tsx}'"
+	]
+}
