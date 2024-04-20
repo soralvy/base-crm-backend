@@ -68,3 +68,32 @@ To check logs for a specific Docker container:
 ```bash
 docker logs <container_name>
 ```
+
+## Running the Migration for Initial Setup
+
+Before you start using the application, it's crucial to initialize the database with the required schema and data. This is done through running migrations which set up tables and insert necessary default records.
+
+### How to Run Migrations
+
+Navigate to the project's root directory and execute the following command to run migrations:
+
+```bash
+# Run migrations to set up the database
+npm run migration:run
+```
+
+### What the Migration Does
+
+The initial migration performs several key tasks:
+
+1. **Creates Database Tables**: Sets up all the necessary tables such as `users`, `roles`, `permissions`, and `permission_categories` based on the entity definitions in your application.
+2. **Inserts Default Data**:
+
+   - **Roles**: Inserts predefined roles like 'Administrator'.
+   - **Users**: Inserts a default user, typically with administrative privileges.
+   - **Permission Categories**: Creates categories under which permissions can be organized.
+   - **Permissions**: Inserts specific permissions, linking them to the appropriate categories and roles.
+
+3. **Associates Data**: Establishes relationships between entities. For example, it links permissions to roles and roles to users, ensuring the database reflects the correct hierarchies and access controls as intended by the application's design.
+
+4. **Ensures Integrity**: Sets foreign keys and other constraints to maintain data integrity and enforce the relationships between different pieces of data.
