@@ -16,60 +16,60 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 class DatabaseCredentials {
   @IsString()
-  host: string;
+  host!: string;
 
   @IsInt()
   @Min(0)
   @Max(65_535)
-  port: number;
+  port!: number;
 
   @IsString()
-  username: string;
+  username!: string;
 
   @IsString()
-  password: string;
+  password!: string;
 
   @IsString()
-  name: string;
+  name!: string;
 }
 
 class SSLConfig {
   @IsBoolean()
   @IsOptional()
-  enabled: boolean;
+  enabled!: boolean;
 
   @IsBoolean()
   @IsOptional()
-  rejectUnauthorized: boolean;
+  rejectUnauthorized!: boolean;
 
   @IsString()
   @IsOptional()
-  ca: string;
+  ca!: string;
 
   @IsString()
   @IsOptional()
-  key: string;
+  key!: string;
 
   @IsString()
   @IsOptional()
-  cert: string;
+  cert!: string;
 }
 
 class EnvironmentVariablesValidator {
   @ValidateIf((envValues) => envValues.DATABASE_URL)
   @IsString()
-  DATABASE_URL: string;
+  DATABASE_URL!: string;
 
   @ValidateIf((envValues) => !envValues.DATABASE_URL)
   @IsOptional()
-  credentials: DatabaseCredentials;
+  credentials!: DatabaseCredentials;
 
   @IsOptional()
-  ssl: SSLConfig;
+  ssl!: SSLConfig;
 
   @IsBoolean()
   @IsOptional()
-  synchronize: boolean;
+  synchronize!: boolean;
 
   @IsOptional()
   namingStrategy: NamingStrategyInterface = new SnakeNamingStrategy();
@@ -80,7 +80,7 @@ class EnvironmentVariablesValidator {
 
   @IsInt()
   @IsOptional()
-  maxConnections: number;
+  maxConnections!: number;
 }
 
 export default registerAs<DatabaseConfig>(CONFIG_KEYS.database, () => {
