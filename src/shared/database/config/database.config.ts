@@ -8,12 +8,11 @@ import {
   ValidateIf,
   IsBoolean,
 } from 'class-validator';
-import { validateConfig } from 'src/shared/lib';
 import { DatabaseConfig } from './database-config.type';
-
+import { CONFIG_KEYS } from '~/shared/config';
+import { validateConfig } from '~/shared/lib';
 import { NamingStrategyInterface } from 'typeorm/naming-strategy/NamingStrategyInterface';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { CONFIG_KEYS } from 'src/shared/config';
 
 class DatabaseCredentials {
   @IsString()
