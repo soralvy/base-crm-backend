@@ -1,4 +1,4 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { type AllConfigType, validationOptions } from './shared/config';
@@ -14,10 +14,15 @@ import {
 } from './shared/interceptors';
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 import { setupSwaggerModule } from './shared/lib';
+import { DatabaseExceptionFilter } from './shared/filters';
 
+// todo: add helmet
+// todo: add cors
+// todo: add health check
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService<AllConfigType>);
+  const httpAdapterHost = app.get(HttpAdapterHost);
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
@@ -35,6 +40,7 @@ async function bootstrap() {
   });
 
   app.useGlobalPipes(new ValidationPipe(validationOptions));
+  app.useGlobalFilters(new DatabaseExceptionFilter(httpAdapterHost));
   app.useGlobalInterceptors(
     new LoggingInterceptor(),
     // AsyncResponseResolverInterceptor is used to resolve promises in responses because class-transformer can't do it

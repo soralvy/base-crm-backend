@@ -18,6 +18,10 @@
     "skipDefaultLibCheck": true,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "strict": true,
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   }
 }

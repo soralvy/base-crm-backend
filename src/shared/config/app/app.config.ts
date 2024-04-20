@@ -21,25 +21,25 @@ enum Environment {
 class EnvironmentVariablesValidator {
   @IsEnum(Environment)
   @IsOptional()
-  NODE_ENV: Environment;
+  NODE_ENV!: Environment;
 
   @IsInt()
   @Min(0)
   @Max(65_535)
   @IsOptional()
-  APP_PORT: number;
+  APP_PORT!: number;
 
   @IsUrl({ require_tld: false })
   @IsOptional()
-  FRONTEND_DOMAIN: string;
+  FRONTEND_DOMAIN!: string;
 
   @IsUrl({ require_tld: false })
   @IsOptional()
-  BACKEND_DOMAIN: string;
+  BACKEND_DOMAIN!: string;
 
   @IsString()
   @IsOptional()
-  API_PREFIX: string;
+  API_PREFIX!: string;
 }
 
 // eslint-disable-next-line complexity
