@@ -15,12 +15,19 @@ import {
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 import { setupSwaggerModule } from './shared/lib';
 import { DatabaseExceptionFilter } from './shared/filters';
+import {
+  type NestFastifyApplication,
+  FastifyAdapter,
+} from '@nestjs/platform-fastify';
+import fastifyHelmet from '@fastify/helmet';
 
-// todo: add helmet
 // todo: add cors
 // todo: add health check
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
+  );
   const configService = app.get(ConfigService<AllConfigType>);
   const httpAdapterHost = app.get(HttpAdapterHost);
 
@@ -54,12 +61,14 @@ async function bootstrap() {
   app.useLogger(logger);
   app.flushLogs();
 
+  app.register(fastifyHelmet);
+
   setupSwaggerModule(app, logger, configService);
 
   const port = configService.getOrThrow('app.port', { infer: true });
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
 
-  logger.log(`App successfully started. Listening on port ${port}`);
+  logger.log(`Application is running on: ${await app.getUrl()}`);
 }
 
 bootstrap();
