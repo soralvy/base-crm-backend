@@ -2,12 +2,19 @@ import { type MigrationInterface, type QueryRunner } from 'typeorm';
 
 export class InitialSetup1713655156029 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    const auditColumnSql = `
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "deletedAt" TIMESTAMP WITH TIME ZONE DEFAULT NULL,
+    "version" INT NOT NULL DEFAULT 1`;
+
     // Create Roles Table
     await queryRunner.query(`
             CREATE TABLE IF NOT EXISTS roles (
                 id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
                 name VARCHAR(512) NOT NULL,
-                description VARCHAR(1024) NOT NULL
+                description VARCHAR(1024) NOT NULL,
+                ${auditColumnSql}
             );
         `);
 
@@ -17,7 +24,9 @@ export class InitialSetup1713655156029 implements MigrationInterface {
                 id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
                 email VARCHAR(320) UNIQUE NOT NULL,
                 name VARCHAR(256) NOT NULL,
-                surname VARCHAR(256) NOT NULL
+                surname VARCHAR(256) NOT NULL,
+                ${auditColumnSql}
+
             );
         `);
 
@@ -26,7 +35,9 @@ export class InitialSetup1713655156029 implements MigrationInterface {
             CREATE TABLE IF NOT EXISTS permission_categories (
                 id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
                 name VARCHAR(512) NOT NULL,
-                description VARCHAR(1024) NOT NULL
+                description VARCHAR(1024) NOT NULL,
+                ${auditColumnSql}
+
             );
         `);
 
@@ -48,14 +59,16 @@ export class InitialSetup1713655156029 implements MigrationInterface {
                 name VARCHAR(256) NOT NULL,
                 description VARCHAR(1024),
                 action VARCHAR(256) UNIQUE NOT NULL,
-                permissionCategoryId UUID NOT NULL,
-                FOREIGN KEY (permissionCategoryId) REFERENCES permission_categories(id)
+                "permissionCategoryId" UUID NOT NULL,
+                FOREIGN KEY ("permissionCategoryId") REFERENCES permission_categories(id),
+                ${auditColumnSql}
+
             );
         `);
 
     // Insert initial permissions with category
     await queryRunner.query(`
-            INSERT INTO permissions (name, description, action, permissionCategoryId) VALUES 
+            INSERT INTO permissions (name, description, action, "permissionCategoryId") VALUES 
             ('Create Users', 'Allow user to create other users', 'user.create', '${category.id}'),
             ('Delete Users', 'Allow user to delete other users', 'user.delete', '${category.id}');
         `);
@@ -63,22 +76,26 @@ export class InitialSetup1713655156029 implements MigrationInterface {
     // Create Users_Roles Junction Table
     await queryRunner.query(`
             CREATE TABLE IF NOT EXISTS users_roles (
-                userId UUID,
-                roleId UUID,
-                PRIMARY KEY (userId, roleId),
-                FOREIGN KEY (userId) REFERENCES users(id),
-                FOREIGN KEY (roleId) REFERENCES roles(id)
+                "userId" UUID,
+                "roleId" UUID,
+                PRIMARY KEY ("userId", "roleId"),
+                FOREIGN KEY ("userId") REFERENCES users(id),
+                FOREIGN KEY ("roleId") REFERENCES roles(id),
+                ${auditColumnSql}
+
             );
         `);
 
     // Create User_Roles_Permissions Junction Table
     await queryRunner.query(`
             CREATE TABLE IF NOT EXISTS user_roles_permissions (
-                roleId UUID,
-                permissionId UUID,
-                PRIMARY KEY (roleId, permissionId),
-                FOREIGN KEY (roleId) REFERENCES roles(id),
-                FOREIGN KEY (permissionId) REFERENCES permissions(id)
+                "roleId" UUID,
+                "permissionId" UUID,
+                PRIMARY KEY ("roleId", "permissionId"),
+                FOREIGN KEY ("roleId") REFERENCES roles(id),
+                FOREIGN KEY ("permissionId") REFERENCES permissions(id),
+                ${auditColumnSql}
+
             );
         `);
 
@@ -94,13 +111,13 @@ export class InitialSetup1713655156029 implements MigrationInterface {
 
     // Associate all permissions with the administrator role
     await queryRunner.query(`
-            INSERT INTO user_roles_permissions (roleId, permissionId)
+            INSERT INTO user_roles_permissions ("roleId", "permissionId")
             SELECT r.id, p.id FROM roles r CROSS JOIN permissions p WHERE r.name = 'Administrator';
         `);
 
     // Associate the administrator role with a user
     await queryRunner.query(`
-            INSERT INTO users_roles (userId, roleId)
+            INSERT INTO users_roles ("userId", "roleId")
             SELECT u.id, r.id FROM users u, roles r WHERE u.email = 'admin@example.com' AND r.name = 'Administrator';
         `);
   }
