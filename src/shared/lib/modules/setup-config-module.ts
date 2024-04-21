@@ -6,5 +6,6 @@ export const setupConfigModule = () => {
     isGlobal: true,
     load: configurations,
     envFilePath: ['.env'],
+    cache: true,
   });
 };
