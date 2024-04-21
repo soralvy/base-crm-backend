@@ -7,6 +7,6 @@ export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async createUser(user: BaseSignUpByEmailDto) {
-    return this.userRepository.createUser(user);
+    return this.userRepository.createOrUpdate(user);
   }
 }
