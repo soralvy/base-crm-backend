@@ -6,7 +6,6 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PermissionCategory } from './permission-category.entity';
 import {
@@ -26,11 +25,6 @@ export class Permission extends BaseEntityHelper {
   public beforeChange() {
     this.action = this.action.toLowerCase();
   }
-
-  @PrimaryGeneratedColumn('uuid')
-  @Expose()
-  @IsUUID()
-  id!: string;
 
   @Column({ type: String, length: 256, nullable: false })
   @Expose()

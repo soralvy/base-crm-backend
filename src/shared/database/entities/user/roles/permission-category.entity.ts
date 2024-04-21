@@ -1,22 +1,11 @@
-import {
-  Column,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { Permission } from './permission.entity';
 import { Expose } from 'class-transformer';
-import { IsUUID, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsString, MaxLength, MinLength } from 'class-validator';
 import { BaseEntityHelper } from '../../helpers/entity-helper';
 
 @Entity('permission_categories')
 export class PermissionCategory extends BaseEntityHelper {
-  @PrimaryGeneratedColumn('uuid')
-  @Expose()
-  @IsUUID()
-  id!: string;
-
   @Column({ type: String, length: 512, nullable: false })
   @Expose()
   @Index({ unique: true })

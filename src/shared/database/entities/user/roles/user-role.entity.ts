@@ -3,28 +3,16 @@ import {
   IsEnum,
   IsOptional,
   IsString,
-  IsUUID,
   MaxLength,
   MinLength,
 } from 'class-validator';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
 import { BaseEntityHelper } from '../../helpers/entity-helper';
 import { RoleType } from './types/role-type.enum';
 import { Permission } from './permission.entity';
 
 @Entity('roles')
 export class UserRole extends BaseEntityHelper {
-  @PrimaryGeneratedColumn('uuid')
-  @Expose()
-  @IsUUID()
-  id!: string;
-
   @Column({ type: String, length: 512, nullable: false })
   @Expose()
   @IsString()

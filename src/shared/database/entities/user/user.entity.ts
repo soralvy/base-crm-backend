@@ -1,23 +1,10 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, Index, JoinTable, ManyToMany } from 'typeorm';
 import { BaseEntityHelper } from '../helpers/entity-helper';
-import { IsUUID } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { UserRole } from './roles/user-role.entity';
 
 @Entity('users')
 export class UserEntity extends BaseEntityHelper {
-  @PrimaryGeneratedColumn('uuid')
-  @IsUUID()
-  @Expose()
-  id!: string;
-
   @Expose()
   @Column({ type: String, unique: true, nullable: false, length: 320 })
   @Index({ unique: true })

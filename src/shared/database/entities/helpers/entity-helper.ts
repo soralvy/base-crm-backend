@@ -4,9 +4,12 @@ import {
   BaseEntity,
   CreateDateColumn,
   DeleteDateColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  VersionColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber } from 'class-validator';
 
 export abstract class EntityHelper extends BaseEntity {
   __entity?: string;
@@ -22,6 +25,13 @@ export abstract class EntityHelper extends BaseEntity {
 }
 
 export abstract class BaseEntityHelper extends EntityHelper {
+  @PrimaryGeneratedColumn('uuid')
+  @ApiProperty({
+    description: 'Unique identifier',
+  })
+  @Expose()
+  id!: string;
+
   @ApiProperty({
     type: Date,
     description: 'Created at date time in ISO format',
@@ -45,4 +55,13 @@ export abstract class BaseEntityHelper extends EntityHelper {
   @Expose()
   @DeleteDateColumn()
   deletedAt?: Date;
+
+  @ApiProperty({
+    type: 'string',
+    description: 'Entity version for optimistic lock handling',
+  })
+  @VersionColumn()
+  @IsNumber()
+  @Expose()
+  version!: number;
 }
