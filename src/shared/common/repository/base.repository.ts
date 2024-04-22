@@ -8,7 +8,7 @@ import {
   type FindOneOptions,
   IsNull,
 } from 'typeorm';
-import { type BaseEntityHelper } from '../entities';
+import { type BaseEntityHelper } from '../../database/entities';
 import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
 
 export abstract class BaseRepository<
