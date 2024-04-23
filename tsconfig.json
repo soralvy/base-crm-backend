@@ -11,6 +11,7 @@
     "target": "ES2022",
     "sourceMap": true,
     "moduleResolution": "Node16",
+    "resolveJsonModule": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,

@@ -1,0 +1,45 @@
+[
+  {
+    "categoryName": "Roles",
+    "categoryDescription": "Roles management",
+    "permissions": [
+      {
+        "name": "Add new roles",
+        "description": "Create roles",
+        "action": "crm.roles.create",
+        "roles": [
+          "SUPER_ADMIN",
+          "ADMIN"
+        ]
+      },
+      {
+        "name": "See roles",
+        "description": "Read roles",
+        "action": "crm.roles.read",
+        "roles": [
+          "SUPER_ADMIN",
+          "ADMIN",
+          "REGULAR_USER"
+        ]
+      },
+      {
+        "name": "Modify user roles",
+        "description": "Update roles",
+        "action": "crm.roles.update",
+        "roles": [
+          "SUPER_ADMIN",
+          "ADMIN"
+        ]
+      },
+      {
+        "name": "Delete user roles",
+        "description": "Delete roles",
+        "action": "crm.roles.delete",
+        "roles": [
+          "SUPER_ADMIN",
+          "ADMIN"
+        ]
+      }
+    ]
+  }
+]
