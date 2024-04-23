@@ -18,8 +18,8 @@ export const AppDataSource = new DataSource({
   autoLoadEntities: true,
   namingStrategy: new SnakeNamingStrategy(),
   logging: process.env.NODE_ENV !== 'production',
-  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+  entities: [__dirname + 'shared/database/entities/**/*{.ts,.js}'],
+  migrations: [__dirname + 'shared/database/migrations/**/!(*index){.ts,.js}'],
   cli: {
     entitiesDir: 'src',
     subscribersDir: 'subscriber',
