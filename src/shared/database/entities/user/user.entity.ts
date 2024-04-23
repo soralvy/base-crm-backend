@@ -2,6 +2,8 @@ import { Column, Entity, Index, JoinTable, ManyToMany } from 'typeorm';
 import { BaseEntityHelper } from '../helpers/entity-helper';
 import { Expose } from 'class-transformer';
 import { UserRole } from './roles/user-role.entity';
+import { IsEnum } from 'class-validator';
+import { UserStatus } from './types/user-status.enum';
 
 @Entity('users')
 export class UserEntity extends BaseEntityHelper {
@@ -17,6 +19,14 @@ export class UserEntity extends BaseEntityHelper {
   @Expose()
   @Column({ type: String, nullable: false, length: 256 })
   surname!: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserStatus,
+  })
+  @Expose()
+  @IsEnum(UserStatus)
+  status!: UserStatus;
 
   @ManyToMany(() => UserRole, { cascade: true, eager: false })
   @JoinTable({
