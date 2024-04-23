@@ -7,6 +7,7 @@ export type DatabaseConfig = {
   name?: string;
   username?: string;
   synchronize?: boolean;
+  migrationsRun?: boolean;
   maxConnections: number;
   autoLoadEntities?: boolean;
   sslEnabled?: boolean;

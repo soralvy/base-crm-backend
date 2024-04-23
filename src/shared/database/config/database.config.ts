@@ -78,6 +78,10 @@ class EnvironmentVariablesValidator {
   @IsOptional()
   autoLoadEntities = true;
 
+  @IsBoolean()
+  @IsOptional()
+  migrationsRun = true;
+
   @IsInt()
   @IsOptional()
   maxConnections!: number;

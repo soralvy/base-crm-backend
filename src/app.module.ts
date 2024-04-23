@@ -5,12 +5,13 @@ import {
   setupConfigModule,
 } from './shared/lib';
 import { modules } from './modules/exports';
+import * as Migrations from './shared/database/migrations';
 
 @Module({
   imports: [
     setupConfigModule(),
     setupLoggerModule(),
-    setupTypeormModule(),
+    setupTypeormModule({ migrations: Migrations }),
     ...modules,
   ],
 })
