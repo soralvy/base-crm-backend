@@ -6,6 +6,7 @@ import { RoleService } from '../roles/roles.service';
 import { BaseService } from '~/shared/common/base';
 import { UserEntity } from '~/shared/database/entities';
 import { UserEmailAlreadyExistsException } from '~/shared/exceptions';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class UserService extends BaseService<UserEntity, UserRepository> {
@@ -16,6 +17,7 @@ export class UserService extends BaseService<UserEntity, UserRepository> {
     super(userRepository);
   }
 
+  @Transactional()
   async createUser(user: BaseSignUpByEmailDto) {
     const existingUser = await this.findUserByEmail(user.email);
 
@@ -32,6 +34,7 @@ export class UserService extends BaseService<UserEntity, UserRepository> {
     });
   }
 
+  @Transactional()
   async findUserByEmail(email: string) {
     return this.findOne(
       {

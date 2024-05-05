@@ -20,10 +20,13 @@ import {
   FastifyAdapter,
 } from '@nestjs/platform-fastify';
 import fastifyHelmet from '@fastify/helmet';
+import { initializeTransactionalContext } from 'typeorm-transactional/dist/common';
 
 // todo: add cors
 // todo: add health check
 async function bootstrap() {
+  initializeTransactionalContext();
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),

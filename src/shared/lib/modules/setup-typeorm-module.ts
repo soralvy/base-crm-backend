@@ -1,6 +1,7 @@
 import { type Type } from '@nestjs/common';
 import { TypeOrmModule, type TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { DataSource, type MixedList, type DataSourceOptions } from 'typeorm';
+import { addTransactionalDataSource } from 'typeorm-transactional';
 import { TypeOrmConfigService } from '~/shared/database';
 
 export interface SetupTypeormOptions {
@@ -35,6 +36,8 @@ export const setupTypeormModule = (
       };
 
       const dataSource = new DataSource(options);
+
+      addTransactionalDataSource(dataSource);
 
       return await dataSource.initialize();
     },

@@ -3,6 +3,7 @@ import { type BaseRepository } from './base.repository';
 import { capitalizeWords } from '~/shared/lib';
 import { type FindOneOptions } from 'typeorm';
 import { EntityNotFoundException } from './exceptions';
+import { Transactional } from 'typeorm-transactional';
 
 export class BaseService<
   ENTITY extends BaseEntityHelper,
@@ -44,6 +45,7 @@ export class BaseService<
    * @param throwExceptionIfEntityNotFound Indicates whether to throw a NotFoundException if the entity is not found
    * @returns The found entity or undefined
    */
+  @Transactional()
   async findOne(
     findOptions: FindOneOptions<ENTITY>,
     throwExceptionIfEntityNotFound = true,
